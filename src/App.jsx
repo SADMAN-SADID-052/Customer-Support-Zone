@@ -4,6 +4,8 @@ import Banner from './components/Banner';
 import TicketCard from './components/TicketCard';
 import TaskStatus from './components/TaskStatus';
 import Footer from './components/Footer';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const [ticketList, setTicketList] = useState([]);
@@ -19,21 +21,24 @@ function App() {
       .catch((err) => console.error('Error fetching tickets:', err));
   }, []);
 
-  const handleAddToTask = (ticket) => {
-    const exists = taskList.find((t) => t.id === ticket.id);
-    if (exists) return;
-    setTaskList([...taskList, ticket]);
-    setInProgress(inProgress + 1);
-  };
-
-  const handleComplete = (task) => {
-    setTaskList(taskList.filter((t) => t.id !== task.id));
-    setResolvedList([...resolvedList, task]);
-    setTicketList(ticketList.filter((t) => t.id !== task.id));
-    setInProgress(inProgress - 1);
-    setResolved(resolved + 1);
-  };
-
+const handleAddToTask = (ticket) => {
+  const exists = taskList.find((t) => t.id === ticket.id);
+  if (exists) {
+    toast.warn(`"${ticket.title}" is already in Task Status!`);
+    return;
+  }
+  setTaskList([...taskList, ticket]);
+  setInProgress(inProgress + 1);
+  toast.success(`"${ticket.title}" added to Task Status!`);
+};
+const handleComplete = (task) => {
+  setTaskList(taskList.filter((t) => t.id !== task.id));
+  setResolvedList([...resolvedList, task]);
+  setTicketList(ticketList.filter((t) => t.id !== task.id));
+  setInProgress(inProgress - 1);
+  setResolved(resolved + 1);
+  toast.success(`"${task.title}" marked as Resolved! ✅`);
+};
   return (
     <div className="bg-[#F5F5F5] min-h-screen">
       <Navbar />
@@ -70,7 +75,9 @@ function App() {
       </div>
 
       <Footer></Footer>
+      <ToastContainer position="top-center" autoClose={3000} />
     </div>
+    
   );
 }
 
