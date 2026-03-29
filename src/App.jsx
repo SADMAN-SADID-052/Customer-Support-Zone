@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import Banner from './components/Banner';
 import TicketCard from './components/TicketCard';
 import TaskStatus from './components/TaskStatus';
+import Footer from './components/Footer';
 
 function App() {
   const [ticketList, setTicketList] = useState([]);
@@ -67,6 +68,8 @@ function App() {
 
         </div>
       </div>
+
+      <Footer></Footer>
     </div>
   );
 }
